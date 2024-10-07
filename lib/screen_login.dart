@@ -51,20 +51,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           }
         },
         builder: (BuildContext context, AuthState state) {
-          if (state is AuthLoading) {
-            return RotationTransition(
-              turns: cpIndAnimation,
-              child: const GradientCircularProgressIndicator(
-                radius: 20,
-                gradientColors: [
-                  Palette.gradient1,
-                  Palette.gradient2,
-                  Palette.gradient3,
-                ],
-                strokeWidth: 6.0,
-              ),
-            );
-          }
           return SingleChildScrollView(
             child: Center(
               child: Padding(
@@ -105,16 +91,29 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       controller: passwordController,
                     ),
                     const SizedBox(height: 20),
-                    GradientButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                              AuthLoginRequested(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              ),
-                            );
-                      },
-                    ),
+                    state is AuthLoading
+                        ? RotationTransition(
+                            turns: cpIndAnimation,
+                            child: const GradientCircularProgressIndicator(
+                              radius: 20,
+                              gradientColors: [
+                                Palette.gradient1,
+                                Palette.gradient2,
+                                Palette.gradient3,
+                              ],
+                              strokeWidth: 6.0,
+                            ),
+                          )
+                        : GradientButton(
+                            onPressed: () {
+                              context.read<AuthBloc>().add(
+                                    AuthLoginRequested(
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim(),
+                                    ),
+                                  );
+                            },
+                          ),
                   ],
                 ),
               ),
