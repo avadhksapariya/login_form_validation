@@ -24,7 +24,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await Future.delayed(
           const Duration(seconds: 1),
           () {
-            return emit(AuthSuccess(uid: '${email.split('.').first}-$password'));
+            return emit(AuthSuccess(uid: email.split('@').first));
+          },
+        );
+      } on Exception catch (e) {
+        return emit(AuthFailure(e.toString()));
+      }
+    });
+
+    on<AuthLogoutRequested>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        await Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            return emit(AuthInitial());
           },
         );
       } on Exception catch (e) {

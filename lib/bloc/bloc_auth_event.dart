@@ -9,3 +9,5 @@ final class AuthLoginRequested extends AuthEvent {
   final String email;
   final String password;
 }
+
+final class AuthLogoutRequested extends AuthEvent {}

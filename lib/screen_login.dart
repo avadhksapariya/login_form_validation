@@ -113,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     ),
                                   );
                             },
+                            title: 'Sign in',
                           ),
                   ],
                 ),
