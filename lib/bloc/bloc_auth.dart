@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,20 +11,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
 
-  @override
+  // Added Bloc Observer for this.
+  /*@override
   void onChange(Change<AuthState> change) {
     super.onChange(change);
     log('AuthBlock change: $change');
-  }
+  }*/
 
   // onTransition: only available in Bloc, not in Cubit
   // as Cubit works on what function was called instead of an event.
   // Transition (is called) happens before the change occur.
-  @override
+  /*@override
   void onTransition(Transition<AuthEvent, AuthState> transition) {
     super.onTransition(transition);
     log('AuthBlock transition: $transition');
-  }
+  }*/
 
   void _onAuthLoginRequested(AuthLoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
