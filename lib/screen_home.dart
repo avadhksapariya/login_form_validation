@@ -49,39 +49,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }
         },
         builder: (BuildContext context, Object? state) {
-          return state is AuthLoading
-              ? Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: RotationTransition(
-                      turns: cpIndAnimation,
-                      child: const GradientCircularProgressIndicator(
-                        radius: 20,
-                        gradientColors: [
-                          Palette.gradient1,
-                          Palette.gradient2,
-                          Palette.gradient3,
-                        ],
-                        strokeWidth: 6.0,
-                      ),
-                    ),
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text('Welcome ${(state as AuthSuccess).uid} !'),
-                      const Spacer(),
-                      GradientButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(AuthLogoutRequested());
-                        },
-                        title: 'Sign out',
-                      ),
+          if (state is AuthLoading) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: RotationTransition(
+                  turns: cpIndAnimation,
+                  child: const GradientCircularProgressIndicator(
+                    radius: 20,
+                    gradientColors: [
+                      Palette.gradient1,
+                      Palette.gradient2,
+                      Palette.gradient3,
                     ],
+                    strokeWidth: 6.0,
                   ),
-                );
+                ),
+              ),
+            );
+          } else if (state is AuthSuccess) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Text('Welcome ${state.uid} !'),
+                  const Spacer(),
+                  GradientButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(AuthLogoutRequested());
+                    },
+                    title: 'Sign out',
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return const Center(child: Text('Something went wrong!'));
+          }
         },
       ),
     );
