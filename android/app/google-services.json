@@ -12,7 +12,20 @@
           "package_name": "com.apexavadh.login_form_validation"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "303368998448-jfrji61qnmt2to2rc54jr5qnrtq3jipb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apexavadh.login_form_validation",
+            "certificate_hash": "eeeed2f44b2cdffbb78e5dbe9953e0350a843d67"
+          }
+        },
+        {
+          "client_id": "303368998448-jv4j2mlo81sl8nqop1f9qv6pb22nol3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCEFjSp4ZSfdIU4xi2-EFYvKSD0dgANOSw"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303368998448-jv4j2mlo81sl8nqop1f9qv6pb22nol3e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "303368998448-nejb5rjm6f41p6bmf9v7e14brklfr8ol.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apexavadh.loginFormValidation"
+              }
+            }
+          ]
         }
       }
     }

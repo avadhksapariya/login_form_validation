@@ -66,9 +66,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     const SizedBox(height: 50),
-                    const SocialButton(iconPath: 'assets/svgs/g_logo.svg', label: 'Continue with Google'),
+                    SocialButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(AuthGoogleSignInRequested());
+                      },
+                      iconPath: 'assets/svgs/g_logo.svg',
+                      label: 'Continue with Google',
+                    ),
                     const SizedBox(height: 20),
-                    const SocialButton(
+                    SocialButton(
+                      onPressed: () {},
                       iconPath: 'assets/svgs/f_logo.svg',
                       label: 'Continue with Facebook',
                       horizontalPadding: 43,

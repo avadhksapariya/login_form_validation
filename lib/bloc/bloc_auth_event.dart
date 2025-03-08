@@ -10,4 +10,6 @@ final class AuthLoginRequested extends AuthEvent {
   final String password;
 }
 
+final class AuthGoogleSignInRequested extends AuthEvent {}
+
 final class AuthLogoutRequested extends AuthEvent {}

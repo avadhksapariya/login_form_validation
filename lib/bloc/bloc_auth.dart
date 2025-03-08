@@ -1,12 +1,20 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 part 'bloc_auth_event.dart';
 part 'bloc_auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   AuthBloc() : super(AuthInitial()) {
     on<AuthLoginRequested>(_onAuthLoginRequested);
+
+    on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
 
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
@@ -27,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     log('AuthBlock transition: $transition');
   }*/
 
-  void _onAuthLoginRequested(AuthLoginRequested event, Emitter<AuthState> emit) async {
+  Future<void> _onAuthLoginRequested(AuthLoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final email = event.email;
@@ -49,6 +57,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         },
       );
     } on Exception catch (e) {
+      return emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onAuthGoogleSignInRequested(AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+        final AuthCredential authCredential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+
+        UserCredential result = await auth.signInWithCredential(authCredential);
+        User? user = result.user;
+
+        if (user != null) {
+          await Future.delayed(
+            const Duration(seconds: 1),
+            () {
+              return emit(AuthSuccess(uid: "${user.displayName}"));
+            },
+          );
+        } else {
+          return emit(AuthFailure('Could not sign in the user.'));
+        }
+      } else {
+        return emit(AuthFailure('Unable to sign in with Google.'));
+      }
+    } on Exception catch (e) {
+      log(">>> Error: ${e.toString()}");
       return emit(AuthFailure(e.toString()));
     }
   }

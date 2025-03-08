@@ -3,24 +3,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:login_form_validation/palette.dart';
 
 class SocialButton extends StatelessWidget {
-  final String iconPath;
-  final String label;
-  final double horizontalPadding;
   const SocialButton({
     super.key,
     required this.iconPath,
     required this.label,
     this.horizontalPadding = 50,
+    required this.onPressed,
   });
+
+  final String iconPath;
+  final String label;
+  final double horizontalPadding;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: SvgPicture.asset(
         iconPath,
         width: 25,
-        color: Palette.whiteColor,
+        theme: const SvgTheme(currentColor: Palette.whiteColor),
       ),
       label: Text(
         label,
