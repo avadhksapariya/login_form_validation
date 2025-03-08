@@ -9,6 +9,12 @@ final class AuthSuccess extends AuthState {
   final String uid;
 }
 
+final class AuthGoogleSignInSuccess extends AuthState {
+  final String email;
+
+  AuthGoogleSignInSuccess({required this.email});
+}
+
 final class AuthFailure extends AuthState {
   AuthFailure(this.error);
 
@@ -16,3 +22,5 @@ final class AuthFailure extends AuthState {
 }
 
 final class AuthLoading extends AuthState {}
+
+final class AuthGoogleLoading extends AuthState {}

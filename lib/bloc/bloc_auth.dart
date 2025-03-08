@@ -16,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
 
+    on<AuthGoogleSignOutRequested>(_onAuthGoogleSignOutRequested);
+
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
 
@@ -62,7 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onAuthGoogleSignInRequested(AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(AuthGoogleLoading());
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
@@ -80,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await Future.delayed(
             const Duration(seconds: 1),
             () {
-              return emit(AuthSuccess(uid: "${user.displayName}"));
+              return emit(AuthGoogleSignInSuccess(email: "${user.displayName}"));
             },
           );
         } else {
@@ -91,6 +93,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } on Exception catch (e) {
       log(">>> Error: ${e.toString()}");
+      return emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onAuthGoogleSignOutRequested(AuthGoogleSignOutRequested event, Emitter<AuthState> emit) async {
+    emit(AuthGoogleLoading());
+    try {
+      await FirebaseAuth.instance.signOut();
+      await Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          return emit(AuthInitial());
+        },
+      );
+    } on Exception catch (e) {
       return emit(AuthFailure(e.toString()));
     }
   }

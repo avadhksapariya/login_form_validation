@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
           }
 
-          if (state is AuthSuccess) {
+          if (state is AuthSuccess || state is AuthGoogleSignInSuccess) {
             Navigator.of(context)
                 .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
           }
@@ -66,13 +66,26 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
                     ),
                     const SizedBox(height: 50),
-                    SocialButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(AuthGoogleSignInRequested());
-                      },
-                      iconPath: 'assets/svgs/g_logo.svg',
-                      label: 'Continue with Google',
-                    ),
+                    state is AuthGoogleLoading
+                        ? RotationTransition(
+                            turns: cpIndAnimation,
+                            child: const GradientCircularProgressIndicator(
+                              radius: 20,
+                              gradientColors: [
+                                Palette.gradient1,
+                                Palette.gradient2,
+                                Palette.gradient3,
+                              ],
+                              strokeWidth: 6.0,
+                            ),
+                          )
+                        : SocialButton(
+                            onPressed: () {
+                              context.read<AuthBloc>().add(AuthGoogleSignInRequested());
+                            },
+                            iconPath: 'assets/svgs/g_logo.svg',
+                            label: 'Continue with Google',
+                          ),
                     const SizedBox(height: 20),
                     SocialButton(
                       onPressed: () {},
