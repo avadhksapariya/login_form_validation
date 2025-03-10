@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
           }
 
-          if (state is AuthSuccess || state is AuthGoogleSignInSuccess) {
+          if (state is AuthSuccess || state is AuthGoogleSignInSuccess || state is AuthFacebookSignInSuccess) {
             Navigator.of(context)
                 .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
           }
@@ -87,12 +87,27 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             label: 'Continue with Google',
                           ),
                     const SizedBox(height: 20),
-                    SocialButton(
-                      onPressed: () {},
-                      iconPath: 'assets/svgs/f_logo.svg',
-                      label: 'Continue with Facebook',
-                      horizontalPadding: 43,
-                    ),
+                    state is AuthFacebookLoading
+                        ? RotationTransition(
+                            turns: cpIndAnimation,
+                            child: const GradientCircularProgressIndicator(
+                              radius: 20,
+                              gradientColors: [
+                                Palette.gradient1,
+                                Palette.gradient2,
+                                Palette.gradient3,
+                              ],
+                              strokeWidth: 6.0,
+                            ),
+                          )
+                        : SocialButton(
+                            onPressed: () {
+                              context.read<AuthBloc>().add(AuthFacebookSignInRequested());
+                            },
+                            iconPath: 'assets/svgs/f_logo.svg',
+                            label: 'Continue with Facebook',
+                            horizontalPadding: 43,
+                          ),
                     const SizedBox(height: 15),
                     const Text(
                       'or',

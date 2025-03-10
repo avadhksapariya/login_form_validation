@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 part 'bloc_auth_event.dart';
@@ -17,6 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
 
     on<AuthGoogleSignOutRequested>(_onAuthGoogleSignOutRequested);
+
+    on<AuthFacebookSignInRequested>(_onAuthFacebookSignInRequested);
 
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
@@ -90,6 +93,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       } else {
         return emit(AuthFailure('Unable to sign in with Google.'));
+      }
+    } on Exception catch (e) {
+      log(">>> Error: ${e.toString()}");
+      return emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onAuthFacebookSignInRequested(AuthFacebookSignInRequested event, Emitter<AuthState> emit) async {
+    emit(AuthFacebookLoading());
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        AccessToken? accessToken = loginResult.accessToken;
+        final userInfo = await FacebookAuth.instance.getUserData();
+
+        log(">>> AccessToken: $accessToken");
+        log(">>> UserInfo: ${userInfo.toString()}");
+
+        if (userInfo.isNotEmpty) {
+          await Future.delayed(
+            const Duration(seconds: 1),
+            () {
+              return emit(AuthFacebookSignInSuccess(userData: userInfo));
+            },
+          );
+        } else {
+          return emit(AuthFailure('Could not sign in the user.'));
+        }
+      } else {
+        return emit(AuthFailure('Unable to sign in with Facebook.'));
       }
     } on Exception catch (e) {
       log(">>> Error: ${e.toString()}");

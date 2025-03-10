@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">login-form-validation</string>
+    <string name="facebook_app_id">1019234900064616</string>
+    <string name="fb_login_protocol_scheme">fb1019234900064616</string>
+    <string name="facebook_client_token">411da757ece4c7a42baa7fb33c4f2e96</string>
+</resources>

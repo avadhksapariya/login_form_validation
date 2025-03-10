@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }
         },
         builder: (BuildContext context, Object? state) {
-          if (state is AuthLoading || state is AuthGoogleLoading) {
+          if (state is AuthLoading || state is AuthGoogleLoading || state is AuthFacebookLoading) {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: Center(
@@ -67,13 +67,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
               ),
             );
-          } else if (state is AuthSuccess || state is AuthGoogleSignInSuccess) {
+          } else if (state is AuthSuccess || state is AuthGoogleSignInSuccess || state is AuthFacebookSignInSuccess) {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   if (state is AuthSuccess) Text('Welcome ${state.uid} !'),
                   if (state is AuthGoogleSignInSuccess) Text('Welcome ${state.email} !'),
+                  if (state is AuthFacebookSignInSuccess) Text('Welcome ${state.userData!['name']} !'),
                   const Spacer(),
                   GradientButton(
                     onPressed: () {
@@ -81,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         context.read<AuthBloc>().add(AuthLogoutRequested());
                       } else if (state is AuthGoogleSignInSuccess) {
                         context.read<AuthBloc>().add(AuthGoogleSignOutRequested());
+                      } else if (state is AuthFacebookSignInSuccess) {
+                        // sign out
                       }
                     },
                     title: 'Sign out',

@@ -15,6 +15,12 @@ final class AuthGoogleSignInSuccess extends AuthState {
   AuthGoogleSignInSuccess({required this.email});
 }
 
+final class AuthFacebookSignInSuccess extends AuthState {
+  final Map<String, dynamic>? userData;
+
+  AuthFacebookSignInSuccess({required this.userData});
+}
+
 final class AuthFailure extends AuthState {
   AuthFailure(this.error);
 
@@ -24,3 +30,5 @@ final class AuthFailure extends AuthState {
 final class AuthLoading extends AuthState {}
 
 final class AuthGoogleLoading extends AuthState {}
+
+final class AuthFacebookLoading extends AuthState {}
