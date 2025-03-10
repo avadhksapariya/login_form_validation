@@ -101,6 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthGoogleLoading());
     try {
       await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
       await Future.delayed(
         const Duration(seconds: 1),
         () {
