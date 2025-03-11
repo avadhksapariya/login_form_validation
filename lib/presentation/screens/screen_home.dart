@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_form_validation/bloc/bloc_auth.dart';
-import 'package:login_form_validation/palette.dart';
-import 'package:login_form_validation/screen_login.dart';
-import 'package:login_form_validation/widgets/widget_gradient_button.dart';
-import 'package:login_form_validation/widgets/widget_gradient_circular_progress_indicator.dart';
+import 'package:login_form_validation/presentation/palette.dart';
+import 'package:login_form_validation/presentation/screens/screen_login.dart';
+import 'package:login_form_validation/presentation/widgets/widget_gradient_button.dart';
+import 'package:login_form_validation/presentation/widgets/widget_gradient_circular_progress_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 children: [
                   if (state is AuthSuccess) Text('Welcome ${state.uid} !'),
                   if (state is AuthGoogleSignInSuccess) Text('Welcome ${state.email} !'),
-                  if (state is AuthFacebookSignInSuccess) Text('Welcome ${state.userData!['name']} !'),
+                  if (state is AuthFacebookSignInSuccess) Text('Welcome ${state.userData!.name} !'),
                   const Spacer(),
                   GradientButton(
                     onPressed: () {

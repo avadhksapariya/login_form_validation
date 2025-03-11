@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_form_validation/app_bloc_observer.dart';
 import 'package:login_form_validation/bloc/bloc_auth.dart';
 import 'package:login_form_validation/firebase_options.dart';
-import 'package:login_form_validation/palette.dart';
-import 'package:login_form_validation/screen_login.dart';
+import 'package:login_form_validation/presentation/palette.dart';
+import 'package:login_form_validation/presentation/screens/screen_login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

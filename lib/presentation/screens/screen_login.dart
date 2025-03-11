@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_form_validation/bloc/bloc_auth.dart';
-import 'package:login_form_validation/palette.dart';
-import 'package:login_form_validation/screen_home.dart';
-import 'package:login_form_validation/widgets/widget_gradient_button.dart';
-import 'package:login_form_validation/widgets/widget_gradient_circular_progress_indicator.dart';
-import 'package:login_form_validation/widgets/widget_login_field.dart';
-import 'package:login_form_validation/widgets/widget_social_button.dart';
+import 'package:login_form_validation/presentation/palette.dart';
+import 'package:login_form_validation/presentation/screens/screen_home.dart';
+import 'package:login_form_validation/presentation/widgets/widget_gradient_button.dart';
+import 'package:login_form_validation/presentation/widgets/widget_gradient_circular_progress_indicator.dart';
+import 'package:login_form_validation/presentation/widgets/widget_login_field.dart';
+import 'package:login_form_validation/presentation/widgets/widget_social_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

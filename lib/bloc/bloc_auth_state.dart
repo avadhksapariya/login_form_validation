@@ -16,7 +16,7 @@ final class AuthGoogleSignInSuccess extends AuthState {
 }
 
 final class AuthFacebookSignInSuccess extends AuthState {
-  final Map<String, dynamic>? userData;
+  final ModelFacebookAuth? userData;
 
   AuthFacebookSignInSuccess({required this.userData});
 }

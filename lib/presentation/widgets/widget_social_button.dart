@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:login_form_validation/palette.dart';
+import 'package:login_form_validation/presentation/palette.dart';
 
 class SocialButton extends StatelessWidget {
   const SocialButton({

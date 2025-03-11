@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:login_form_validation/data/models/model_facebook_auth.dart';
 
 part 'bloc_auth_event.dart';
 part 'bloc_auth_state.dart';
@@ -110,15 +111,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (loginResult.status == LoginStatus.success) {
         AccessToken? accessToken = loginResult.accessToken;
         final userInfo = await FacebookAuth.instance.getUserData();
+        final decodedUserData = ModelFacebookAuth.fromJson(userInfo);
 
         log(">>> AccessToken: $accessToken");
-        log(">>> UserInfo: ${userInfo.toString()}");
+        log(">>> UserInfo: ${decodedUserData.toJson()}");
 
         if (userInfo.isNotEmpty) {
           await Future.delayed(
             const Duration(seconds: 1),
             () {
-              return emit(AuthFacebookSignInSuccess(userData: userInfo));
+              return emit(AuthFacebookSignInSuccess(userData: decodedUserData));
             },
           );
         } else {
