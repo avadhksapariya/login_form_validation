@@ -16,4 +16,6 @@ final class AuthGoogleSignOutRequested extends AuthEvent {}
 
 final class AuthFacebookSignInRequested extends AuthEvent {}
 
+final class AuthFacebookSignOutRequested extends AuthEvent {}
+
 final class AuthLogoutRequested extends AuthEvent {}

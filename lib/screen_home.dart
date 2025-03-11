@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       } else if (state is AuthGoogleSignInSuccess) {
                         context.read<AuthBloc>().add(AuthGoogleSignOutRequested());
                       } else if (state is AuthFacebookSignInSuccess) {
-                        // sign out
+                        context.read<AuthBloc>().add(AuthFacebookSignOutRequested());
                       }
                     },
                     title: 'Sign out',

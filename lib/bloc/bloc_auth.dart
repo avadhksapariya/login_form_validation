@@ -21,6 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthFacebookSignInRequested>(_onAuthFacebookSignInRequested);
 
+    on<AuthFacebookSignOutRequested>(_onAuthFacebookSignOutRequested);
+
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
 
@@ -46,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final email = event.email;
       final password = event.password;
 
-      if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) != true) {
+      if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email) != true) {
         emit(AuthFailure('Kindly add valid email address.'));
         return;
       }
@@ -136,6 +138,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
+      await Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          return emit(AuthInitial());
+        },
+      );
+    } on Exception catch (e) {
+      return emit(AuthFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onAuthFacebookSignOutRequested(AuthFacebookSignOutRequested event, Emitter<AuthState> emit) async {
+    emit(AuthFacebookLoading());
+    try {
+      await FacebookAuth.instance.logOut();
       await Future.delayed(
         const Duration(seconds: 1),
         () {
